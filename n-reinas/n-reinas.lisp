@@ -24,7 +24,7 @@
   (if (zerop n) nil 
       (cons inicio (iota (- n 1) (+ inicio 1)))))
 
-(defun reina-no-choca (reina otras-reinas &optional (fila 1))
+#|(defun reina-no-choca (reina otras-reinas &optional (fila 1))
    (or (null otras-reinas)
        (and (not (equal reina (+ (car otras-reinas) fila)))
             (not (equal reina (- (car otras-reinas) fila))) 
@@ -33,7 +33,16 @@
 (defun es-solucion (tablero)
   (or (null tablero) 
       (and (reina-no-choca (car tablero) (cdr tablero)) 
-           (es-solucion (cdr tablero)))))
+           (es-solucion (cdr tablero)))))|#
+
+(defun hay-repetidos (l)
+  (and (not (null l))
+       (or (find (car l) (cdr l))
+           (hay-repetidos (cdr l)))))
+
+(defun es-solucion (tablero)
+  (and (not (hay-repetidos (mapcar '+ tablero (iota (length tablero)))))
+       (not (hay-repetidos (mapcar '- tablero (iota (length tablero)))))))
 
 (defun n-reinas (n)
   (remove-if-not 'es-solucion (permutaciones (iota n))))
