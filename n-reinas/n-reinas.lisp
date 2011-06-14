@@ -35,14 +35,19 @@
       (and (reina-no-choca (car tablero) (cdr tablero)) 
            (es-solucion (cdr tablero)))))|#
 
-(defun hay-repetidos (l)
+; Verifica si una lista contiene elementos repetidos.
+(defun tiene-repetidos (l)
   (and (not (null l))
        (or (find (car l) (cdr l))
            (hay-repetidos (cdr l)))))
 
+; Verifica si un tablero es una solución del problema de N Reinas. Un tablero
+; se representa mediante una lista de longitud n donde cada elemento es la 
+; columna de una reina y su índice es la fila.
 (defun es-solucion (tablero)
-  (and (not (hay-repetidos (mapcar '+ tablero (iota (length tablero)))))
-       (not (hay-repetidos (mapcar '- tablero (iota (length tablero)))))))
+  (and (not (tiene-repetidos (mapcar '+ tablero (iota (length tablero)))))
+       (not (tiene-repetidos (mapcar '- tablero (iota (length tablero)))))))
 
+; Encuentra todas las soluciones al problema de N Reinas para un N dado.
 (defun n-reinas (n)
   (remove-if-not 'es-solucion (permutaciones (iota n))))
