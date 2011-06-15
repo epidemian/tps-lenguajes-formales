@@ -39,7 +39,7 @@
 (defun tiene-repetidos (l)
   (and (not (null l))
        (or (find (car l) (cdr l))
-           (hay-repetidos (cdr l)))))
+           (tiene-repetidos (cdr l)))))
 
 ; Verifica si un tablero es una solución del problema de N Reinas. Un tablero
 ; se representa mediante una lista de longitud n donde cada elemento es la 
