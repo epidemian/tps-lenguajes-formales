@@ -45,9 +45,10 @@
 ; se representa mediante una lista de longitud n donde cada elemento es la 
 ; columna de una reina y su índice es la fila.
 (defun es-solucion (tablero)
+  ; Un tablero es solución si no hay reinas en las mismas diagonales.
   (and (not (tiene-repetidos (mapcar '+ tablero (iota (length tablero)))))
        (not (tiene-repetidos (mapcar '- tablero (iota (length tablero)))))))
 
 ; Encuentra todas las soluciones al problema de N Reinas para un N dado.
-(defun n-reinas (n)
+(defun n-reinas (n) 
   (remove-if-not 'es-solucion (permutaciones (iota n))))
