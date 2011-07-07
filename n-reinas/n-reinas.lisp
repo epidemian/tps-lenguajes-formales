@@ -24,17 +24,6 @@
   (if (zerop n) nil 
       (cons inicio (iota (- n 1) (+ inicio 1)))))
 
-#|(defun reina-no-choca (reina otras-reinas &optional (fila 1))
-   (or (null otras-reinas)
-       (and (not (equal reina (+ (car otras-reinas) fila)))
-            (not (equal reina (- (car otras-reinas) fila))) 
-            (reina-no-choca reina (cdr otras-reinas) (+ fila 1)))))
-
-(defun es-solucion (tablero)
-  (or (null tablero) 
-      (and (reina-no-choca (car tablero) (cdr tablero)) 
-           (es-solucion (cdr tablero)))))|#
-
 ; Verifica si una lista contiene elementos repetidos.
 (defun tiene-repetidos (l)
   (and (not (null l))
