@@ -25,11 +25,11 @@
                    (mapcan (lambda (tr) (expandir-trayectoria tr grafo))
                            trayectorias)))))
 
-; La representación del grafo:
-; 	a--c--f     h--i
-;	\    / \    \
-;	b---d--g    j
-;	\     /
+; La representación del grafo no conexo:
+; 	a--c--f     
+;	\    / \    h--i
+;	b---d--g    \
+;	\     /     j
 ;       `-e--´
 (defparameter *grafo-simple* 
   '((a (b c)) (b (a d e)) (c (a f)) (d (b f g)) (e (b g)) (f (c d g)) 
