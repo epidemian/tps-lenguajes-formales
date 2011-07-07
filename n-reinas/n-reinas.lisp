@@ -1,8 +1,8 @@
 ;;;; Created on 2011-06-14 01:47:55
 
 ; Calcula las permutaciones de una lista. La lista no debe tener elementos 
-; repetidos. Por ejemplo (permutaciones '(a b c)))
-; devuelve ((a b c) (a c b) (b a c) (b c a) (c a b) (c b a))
+; repetidos. Por ejemplo (permutaciones '(a b c))) ->
+; ((a b c) (a c b) (b a c) (b c a) (c a b) (c b a))
 (defun permutaciones (l)
   (if (null l) 
       '(())
@@ -14,7 +14,7 @@
               l)))
 
 ; Genera una secuencia de enteros consecutivos de tamaño n comenzando por el 
-; valor inicio. Por ejemplo (iota 5 1) devuelve (1 2 3 4 5)
+; valor inicio. Por ejemplo (iota 5 1) -> (1 2 3 4 5)
 (defun iota (n &optional (inicio 0)) 
   (if (zerop n) nil 
       (cons inicio (iota (- n 1) (+ inicio 1)))))
