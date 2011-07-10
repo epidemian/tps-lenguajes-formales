@@ -42,6 +42,9 @@
   '((a (b c)) (b (a d e)) (c (a f)) (d (b f g)) (e (b g)) (f (c d g)) 
     (g (d e f)) (h (i j)) (i (h)) (j (h))))
 
+; Devuelve el grafo que resulta de agregar una arista a un grafo dado. Una 
+; arista es una lista (n1 n2) y representa una conexión desde el nodo n1 al nodo
+; n2. Ejemplo: (agregar-arista '(a c) '((a (b)) (b (c)))) -> ((a (c b)) (b (c)))
 (defun agregar-arista (arista grafo)
   (if (member (cadr arista) (vecinos (car arista) grafo) :test 'nodos-iguales) 
       grafo
@@ -50,39 +53,59 @@
             (remove-if (lambda (x) (nodos-iguales (car arista) (car x)))
                        grafo))))
 
+; Crea un grafo a partir de una lista de aristas. Ejemplo:
+; (crear-grafo '((a b) (b c))) -> ((b (c)) (a (b)))
 (defun crear-grafo (aristas &optional (grafo-inicial nil))
   (if (null aristas) grafo-inicial
       (crear-grafo (cdr aristas) 
                    (agregar-arista (car aristas) grafo-inicial))))
 
-(defun calle (esquinas) 
-  (if (< (length esquinas) 2) nil
-      (cons (list (car esquinas) (cadr esquinas))
-            (calle (cdr esquinas)))))
+; Crea una lista de aristas a partir del nombre de una calle y sus 
+; intersecciones. Ejemplo (crear-calle "A" '("B" "C" "D")) ->
+; ((("A" "B") ("A" "C")) (("A" "C") ("A" "D")))
+(defun crear-calle (calle intersecciones) 
+    (if (< (length intersecciones) 2) nil
+        (cons (list (list calle (car intersecciones)) 
+                    (list calle (cadr intersecciones)))
+              (crear-calle calle (cdr intersecciones))))) 
 
-(defun mapa-facu () 
-  (let* (
-         ; Calles.
-         (mx "Mexico") (ch "Chile") (in "Independencia") (eu "Estados Unidos") 
+(defparameter *mapa-facu*
+  (let* ((mx "Mexico") (ch "Chile") (in "Independencia") (eu "Estados Unidos") 
          (pe "Peru") (bo "Bolivar") (de "Defensa") (ba "Balcarce") 
-         (pc "Paseo Colon") (az "Azopardo")
-         ; Esquinas.
-         (n1 (list mx pe))  (n2 (list mx bo))  (n3 (list mx de))
-         (n4 (list mx ba))  (n5 (list mx pc))  (n6 (list mx az))
-         (n7 (list ch pe))  (n8 (list ch bo))  (n9 (list ch de))
-         (n10 (list ch ba)) (n11 (list ch pc)) (n12 (list ch az))
-         (n13 (list in pe)) (n14 (list in bo)) (n15 (list in de))
-         (n16 (list in pc)) (n17 (list in az)) (n18 (list eu pe))
-         (n19 (list eu bo)) (n20 (list eu de)) (n21 (list eu pc))
-         (n22 (list eu az)))
-    (crear-grafo (append (calle (list n1 n2 n3 n4 n5 n6))
-                         (calle (list n7 n8 n9 n10 n11 n12))
-                         (calle (list n17 n16 n15 n14 n13))
-                         (calle (list n18 n19 n20 n21 n22))
-                         (calle (list n18 n13 n7 n1))
-                         (calle (list n2 n8 n14 n19))
-                         (calle (list n20 n15 n9 n3))
-                         (calle (list n4 n10))
-                         (calle (list n5 n11 n16 n21))
-                         (calle (list n21 n16 n11 n5))
-                         (calle (list n22 n17 n12 n6)))))) 
+         (pc "Paseo Colon") (az "Azopardo"))
+    (crear-grafo (append (crear-calle mx (list pe bo de ba pc az))
+                         (crear-calle ch (list pe bo de ba pc az))
+                         (crear-calle in (list az pc de bo pe))
+                         (crear-calle eu (list pe bo de pc az))
+                         (crear-calle pe (list eu in ch mx))
+                         (crear-calle bo (list mx ch in eu))
+                         (crear-calle de (list eu in ch mx))
+                         (crear-calle ba (list mx ch))
+                         (crear-calle pc (list mx ch in eu))
+                         (crear-calle pc (list eu in ch mx))
+                         (crear-calle az (list eu in ch mx))))))
+
+; Dada una calle y una esquina (una lista con dos calles) devuelve la calle de
+; la esquina que no es la calle dada. Ejemplo: 
+; (otra-calle-en-equina "A" ("B" "A")) -> "B"
+(defun otra-calle (calle esquina)
+  (find-if (lambda (x) (not (equalp calle x))) esquina))
+
+(defun imprimir-camino (camino)
+  (if (> (length camino) 1)
+      (imprimir-camino-desde camino 
+                             (car (intersection (car camino) (cadr camino) 
+                                                :test 'equalp)))))
+
+(defun imprimir-camino-desde (camino calle-anterior)
+  (if camino 
+      (if (member calle-anterior (cadr camino) :test 'equalp)
+          ; Sigue por la misma calle.
+          (imprimir-camino-desde (cdr camino) calle-anterior)
+          ; Agarra una calle nueva.
+          (progn  
+            (format t "Tomar ~s hasta ~s~%" calle-anterior 
+                    (otra-calle calle-anterior (car camino)))
+            (imprimir-camino-desde (cdr camino) 
+                                   (otra-calle calle-anterior (car camino)))))))
+
