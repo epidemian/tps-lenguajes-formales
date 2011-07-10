@@ -1,0 +1,196 @@
+% Tamaño de letra.
+\documentclass[12pt,titlepage]{article}
+%\documentclass{article}
+
+%------------------------------ Paquetes ----------------------------------
+
+% Paquetes:
+
+\usepackage[T1]{fontenc}
+
+%Para comentarios multilínea.
+\usepackage{verbatim}
+
+% Para tener cabecera y pie de página con un estilo personalizado.
+\usepackage{fancyhdr}
+
+% Codificación UTF-8
+\usepackage[utf8]{inputenc}
+
+% Tipografía
+\usepackage{palatino} % Esta es genial!
+\linespread{1.05} % Palatino queda mejor con un poco más de interlineado.
+%\usepackage{times} % Times New Roman.
+
+
+% Castellano.
+\usepackage[spanish]{babel}
+
+% Tamaño de página y márgenes.
+\usepackage[a4paper,left=2cm,right=2cm,headheight=16pt]{geometry}
+%\usepackage[left=2cm,top=3cm,right=2cm,bottom=1cm,head=1.5cm,includefoot]{geometry}
+
+% Para \href y \url
+\usepackage[pdfauthor   ={Demian Ferreiro}%
+           ,pdftitle    ={Trabajos Prácticos - Lenguajes Formales}%
+]{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+pdfborder= 0 0 0
+}
+
+% Gráficos:
+
+% Para generar pdf.
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{pdfpages}
+
+% Para captions.
+\usepackage{caption}
+
+% Sarpadísima tipografía para listings y \texttt
+\usepackage{inconsolata}
+
+\usepackage{xcolor}
+
+% Para ejemplos de código.
+\usepackage{listings}
+\lstset{language=Lisp
+  ,basicstyle=\ttfamily\small % Usa inconsolata
+  ,identifierstyle=\ttfamily
+  ,keywordstyle=\color[rgb]{0,0,1}
+  ,commentstyle=\color[rgb]{0.133,0.545,0.133}
+  ,stringstyle=\color[rgb]{0.627,0.126,0.941}
+  ,morekeywords={true,false}
+  ,showstringspaces=false     % No muestra underscores en los espacios de los strings.
+  ,backgroundcolor=\color{blue!10} % Un color suave de fondo (menos chocante que el frame=single)
+  ,breaklines=false            % Wrappea las lineas automáticamente.
+  ,belowskip=0pt               % Reduce el espacio entre un listing y el párrafo siguiente
+  ,inputencoding=utf8
+  ,literate={á}{{\'a}}1
+           {é}{{\'e}}1
+           {í}{{\'i}}1
+           {ó}{{\'o}}1
+           {ú}{{\'u}}1
+  %frame=single               % Un recuadro en los listings.
+}
+
+% Para fórmulas matemáticas.
+\usepackage{amssymb,amsmath}
+
+% Para pseudocódigo. Instalar texlive-science.
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+% Para poder hacer \begin{Verbatim}[samepage=true]
+\usepackage{fancyvrb}
+
+
+% Son necesarios?
+%\usepackage{float}
+
+%------------------------------ ~paquetes ---------------------------------
+
+%------------------------- Inicio del documento ---------------------------
+
+\begin{document}
+
+% ---------------------- Encabezado y pie de página -----------------------
+
+% Encabezado: sección a la derecha.
+% Pie de página: número de página a la derecha.
+
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{}{\thesection\ \ #1}}
+\lhead{}
+\chead{}
+\rhead{\rightmark}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage}
+
+% ---------------------- ~Encabezado y pie de página ----------------------
+
+% -------------------------- Título y autor(es) ---------------------------
+
+\title{Prolog}
+\author{}
+
+% -------------------------- ~Título y autor(es) --------------------------
+
+% ------------------------------- Carátula --------------------------------
+
+\begin{titlepage}
+
+\thispagestyle{empty}
+
+% Logo facultad.
+\begin{center}
+\includegraphics[scale=0.55]{./fiuba}\\
+\textsc{\Large Universidad de Buenos Aires}\\[0.2cm]
+\textsc{\Large Facultad de Ingeniería}\\[1.5cm]
+
+% Título central.
+
+\textsc{\large Lenguajes Formales (75.14)} \\[0.3cm]
+% \textsc{\large Trabajos Prácticos} \\[0.5cm]
+
+\rule{\linewidth}{0.5mm} \\[0.4cm]
+{\huge \bfseries Trabajos Prácticos} \\
+%{\Large \bfseries Introducción al lenguaje y a la programación lógica}
+\rule{\linewidth}{0.5mm} \\[1cm]
+
+\vfill
+
+\Large 
+\begin{tabular}{lll}
+Demian Ferrerio & 88443 & epidemian@gmail.com \\[0.5cm]
+\end{tabular}
+
+% Pie de página de la carátula.
+{\Large \today}
+
+\end{center}
+\end{titlepage}
+
+% ------------------------------- ~Carátula -------------------------------
+
+% -------------------------------- Índice ---------------------------------
+
+% Hago que las páginas se comiencen a contar a partir de aquí.
+\setcounter{page}{1}
+
+% Índice.
+\tableofcontents
+\newpage
+
+% -------------------------------- ~Índice --------------------------------
+
+% ----------------------------- Inicio del tp -----------------------------
+
+\clearpage	
+
+% Saca la indentación de los párrafos y añade un espacio entre cada uno.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+% Luego del índice, links con color.
+\hypersetup{
+linkcolor=red
+}
+
+% Cosas Nuevas -----------------------------------------------------------------
+
+
+\section{GPS}
+\section{Intérprete TLC}
+\section{Intérprete C}
+\section{N Reinas}
+
+% ------------------------------ Fin del tp -------------------------------
+
+\end{document}
+
+%---------------------------- Fin del documento ---------------------------
