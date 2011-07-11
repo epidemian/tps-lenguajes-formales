@@ -106,6 +106,7 @@
     ((member op '(< > <= >=)) (funcion-booleana op))
     ((eq op '==) (funcion-booleana 'eq))
     ((eq op '!=) (funcion-booleana (lambda (x y) (not (eq x y)))))
+    ((eq op '%) 'mod)
     (t op)))
 
 ; Devuelve los operandos que resultan de ejecutar el primer operador de 

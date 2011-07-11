@@ -422,19 +422,45 @@ Es interesante notar que la función \lstinline|aplicar|, cuando evalúa una fun
 
 \section{Intérprete C}
 
-Factorial:
+\subsection{Pruebas}
+
+La función \lstinline|valor| devuelve el valor de una expresión de pseudo-C para una memoria dada. La memoria, tal como en el intéprete de TLC, es una lista de pares \lstinline|(nombre valor)|. Por ejemplo:
 \begin{lstlisting}
-((int n)
- (int f)
- (main ((scanf n)
-        (f = 1)
-        (while (n > 0) (
-               (f *= n)
-               (n --)
-        ))
-        (printf f)
+> (valor '(a + 5) '((a 2)))
+7
+\end{lstlisting}
+
+Las expresiones que recibe esta función son expresiones tipo C, así que, por ejemplo, las funciones booleanas devuelven \lstinline|0| o \lstinline|1|:
+\begin{lstlisting}
+> (valor '(a > 5) '((a 2)))
+0
+\end{lstlisting}
+
+Las expresiones pueden ser muy complejas, y respetan el orden de precedencia de los operadores de C:
+\begin{lstlisting}
+> (valor '(b / a == (b + 2) % a) '((a 5) (b 10)))
+1
+\end{lstlisting}
+
+\subsubsection{Factorial}
+
+Como caso de prueba interesante, se presenta un programa que lee un número de la entrada, calcula el factorial de ese número y lo imprime en la salida.
+\begin{lstlisting}
+> (setq programa 
+'((int n)
+  (int f)
+  (main ((scanf n)
+         (f = 1)
+         (while (n > 0) (
+                (f *= n)
+                (n --)
+         ))
+         (printf f)
+  ))
  ))
-)
+> (setq entrada '(5))
+> (run programa entrada)
+120
 \end{lstlisting}
 
 \subsection{Código fuente}
