@@ -76,6 +76,7 @@ pdfborder= 0 0 0
            {ú}{{\'u}}1
            {´}{{$^{\prime}$}}1
            {`}{{$^{\backprime}$}}1
+           {ñ}{{\~n}}1
   %frame=single               % Un recuadro en los listings.
 }
 
@@ -465,9 +466,79 @@ Como caso de prueba interesante, se presenta un programa que lee un número de l
 
 \subsection{Código fuente}
 
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:tlc,caption={Intérprete de Pseudo-C}]{../interprete-c/interprete-c.lisp}
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:interpretec,caption={Intérprete de Pseudo-C}]{../interprete-c/interprete-c.lisp}
 
 \section{N Reinas}
+
+\subsection{Tablero}
+
+Para modelar un tablero con $n$ reinas se utiliza una lista de la forma $(r_1 r_2 \cdots r_n)$, donde $r_i$ es el número de columna de la reina ubicada en la $i$-ésima fila.
+
+\subsection{Funciones en común}
+
+El ejercicio de las N Reinas se resolvió de varias formas con el fin de conseguir mejor performance. Las distintoas soluciones comparten algunas funciones básicas.
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,caption={Funciones comunes para el problema de las N Reinas}]{../n-reinas/n-reinas-comun.lisp}
+
+\subsection{Primer solución}
+
+Se puede observar que los tableros válidos, al no poder tener dos reinas en la misma fila o columna, serán siempre permutaciones de la secuencia $(1 2 \cdots n)$.
+
+La primer solución lo que único que hace es calcular todas las permutaciones de $(1 2 \cdots n)$ y filtrar las que sean solución.
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,caption={Primer solución al problema de las N Reinas}]{../n-reinas/n-reinas1.lisp}
+
+Esta solución, si bien sencilla, es muy ineficiente, tanto en tiempo como en uso de memoria. En tiempo porque está evaluando todas las permutacioens posibles de un conjunto de $n$ elementos, y eso es $n!$, lo cual, algortmicamente, es muy complejo. Y en memoria porque debe almacenar esas $n!$ permutaciones en memoria antes de filtrarlas.
+
+\subsection{Primer optimización}
+
+Una primer optimización es ir descartando las permutaciones que no sean solución a medida que se van calculando. Para hacer esto se recurre a la programación de alto orden: se le pasa la función \lstinline|es-solucion| como parámetro a una función \lstinline|filtrar-permutaciones| que filtra las permutaciones de una secuencia que cumplan con ese predicado.
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,caption={Primer optimización: no se guardan todas las permutaciones en memoria}]{../n-reinas/n-reinas-comun.lisp}
+
+Así, se previene utilizar desmesuradamente la memoria, pero aún así se siguen evaluando las $n!$ permutaciones, por lo cual el algoritmo sigue siendo muy malo en términos de tiempo.
+
+\subsection{Segunda optimización}
+
+Una última optimización sale de la observación de que, por ejemplo para el caso de $n=8$, las permutaciones de la forma $(1 2 x_3 \cdots x_8)$ nunca serán solución, no importa qué valores tomen $x_3 \cdots x_8$.
+
+Con la misma idea de usar una función como predicado para evaluar las permutaciones a filtrar, se peude hacer una función, \lstinline|filtrar-permutaciones-parciales| que descarte todas las permutaciones derivadas de una permutación parcial que no pase el predicado.
+
+Afortunadamente, la función \lstinline|es-solucion| es suficientemente versatil como para evaluar soluciones parciales:
+\begin{lstlisting}
+> (es-solucion '(4 5))
+NIL
+\end{lstlisting}
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,caption={Segunda optimización: no se prueban todas las permutaciones}]{../n-reinas/n-reinas-comun.lisp}
+
+\subsection{Pruebas}
+
+La solución para $n=1$ es trivial:
+\begin{lstlisting}
+> (n-reinas 1)
+((0))
+\end{lstlisting}
+
+No existe solución para $n = 2$ y $n = 3$:
+\begin{lstlisting}
+> (n-reinas 2)
+NIL
+> (n-reinas 3)
+NIL
+\end{lstlisting}
+
+$n=4$ tiene 2 soluciones:
+\begin{lstlisting}
+> (n-reinas 4)
+((2 0 3 1) (1 3 0 2))
+\end{lstlisting}
+
+Y $n=8$ tiene 92 soluciones:
+\begin{lstlisting}
+> (length (n-reinas 8))
+92
+\end{lstlisting}
 
 % ------------------------------ Fin del tp -------------------------------
 

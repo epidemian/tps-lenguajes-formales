@@ -24,7 +24,7 @@
 
 ; Una condición de error para las variables no declaradas.
 (define-condition variable-no-declarada (error)
-  (var :initarg :text :reader var))
+  ((var :initarg :text :reader var)))
 
 ; Devuelve la memoria que resulta de asignar una variable a una memoria dada.
 (defun asignar (var valor mem)
