@@ -33,11 +33,11 @@
                            trayectorias)))))
 
 ; La representación del grafo no conexo:
-; 	a--c--f     
-;	|    / \    h--i
-;	b---d---g    \
-;	 \     /      j
-;         `-e-´
+;    a--c--f     
+;    |    / \    h--i
+;    b---d---g    \
+;     \     /      j
+;      `-e-´
 (defparameter *grafo-simple* 
   '((a (b c)) (b (a d e)) (c (a f)) (d (b f g)) (e (b g)) (f (c d g)) 
     (g (d e f)) (h (i j)) (i (h)) (j (h))))
@@ -83,7 +83,7 @@
                          (crear-calle ba (list mx ch))
                          (crear-calle pc (list mx ch in eu))
                          (crear-calle pc (list eu in ch mx))
-                         (crear-calle az (list eu in ch mx))))))
+                         (crear-calle az (list eu in ch mx)))))) 
 
 ; Dada una calle y una esquina (una lista con dos calles) devuelve la calle de
 ; la esquina que no es la calle dada. Ejemplo: 
@@ -91,6 +91,7 @@
 (defun otra-calle (calle esquina)
   (find-if (lambda (x) (not (equalp calle x))) esquina))
 
+; Imprime un camino en un formato legible.
 (defun imprimir-camino (camino)
   (if (> (length camino) 1)
       (imprimir-camino-desde camino 
