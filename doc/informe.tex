@@ -421,6 +421,26 @@ Así, es posible definir funciones recursivas, como el factorial:
 Es interesante notar que la función \lstinline|aplicar|, cuando evalúa una función definida en el ambiente, crea un nuevo ambiente que resulta del ambiente anterior mas los nombres de los parámetros de la función a evaluar y sus respectivos valores. Así es como las funciones definidas en el ambiente pueden hacer referencia a variables del ambiente además de sus parámetros.
 
 \section{Intérprete C}
+
+Factorial:
+\begin{lstlisting}
+((int n)
+ (int f)
+ (main ((scanf n)
+        (f = 1)
+        (while (n > 0) (
+               (f *= n)
+               (n --)
+        ))
+        (printf f)
+ ))
+)
+\end{lstlisting}
+
+\subsection{Código fuente}
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:tlc,caption={Intérprete de Pseudo-C}]{../interprete-c/interprete-c.lisp}
+
 \section{N Reinas}
 
 % ------------------------------ Fin del tp -------------------------------
