@@ -371,9 +371,55 @@ Tomar "Bolivar" hasta "Estados Unidos"
 
 \subsection{Código fuente}
 
-\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:gps,caption={gps.lisp}]{../gps/gps.lisp}
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:gps,caption={GPS}]{../gps/gps.lisp}
 
 \section{Intérprete TLC}
+
+\subsection{Pruebas}
+
+La función principal del intérprete TLC es \lstinline|evaluar|, que recibe dos argumentos: una expresión a evaluar y un ambiente. El ambiente es una lista de listas de la forma \lstinline|nombre valor| donde \lstinline|nombre| es el nombre de una variable y \lstinline|valor| es el valor que tiene asociada. Así, por ejemlplo \dots
+\begin{lstlisting}
+> (evaluar '(cons a b) '((a 1) (b (2 3))))
+(1 2 3)
+\end{lstlisting}
+\dots llama a \lstinline|cons| con los valores \lstinline|1| y \lstinline|(2 3)|.
+
+Algunas funciones de TLC Lisp se comportan distinto de las de Common Lisp. Por ejemplo, \lstinline|nth| recibe primero la lista y luego el índice comenzando de 1:
+\begin{lstlisting}
+> (evaluar '(nth (quote (a b c)) 2) nil)
+B
+\end{lstlisting}
+
+En el ambiente se permiten definir funciones. Esto se hace asociando una función anónima a una variable. Por ejemplo:
+\begin{lstlisting}
+(evaluar '(doble 6) '((doble (lambda (x) (* x 2)))))
+12
+\end{lstlisting}
+
+Las funciones definidas en el ambiente pueden hacer referencia a variables definidas en él:
+\begin{lstlisting}
+> (setq ambiente '((n 5) 
+                   (n-veces (lambda (x) 
+                               (* n x)))))
+> (evaluar '(n-veces 10) ambiente)
+50
+\end{lstlisting}
+
+Así, es posible definir funciones recursivas, como el factorial:
+\begin{lstlisting}
+> (setq ambiente '((fact (lambda (n) 
+                            (if (eq n 0) 1
+                                 (* n (fact (- n 1))))))))
+> (evaluar '(fact 5) ambiente)
+120
+\end{lstlisting}
+
+\subsection{Código fuente}
+
+\lstinputlisting[basicstyle=\ttfamily\footnotesize,label=lst:tlc,caption={Intérprete TLC Lisp}]{../interprete-tlc/interprete-tlc.lisp}
+
+Es interesante notar que la función \lstinline|aplicar|, cuando evalúa una función definida en el ambiente, crea un nuevo ambiente que resulta del ambiente anterior mas los nombres de los parámetros de la función a evaluar y sus respectivos valores. Así es como las funciones definidas en el ambiente pueden hacer referencia a variables del ambiente además de sus parámetros.
+
 \section{Intérprete C}
 \section{N Reinas}
 
